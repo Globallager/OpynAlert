@@ -7,6 +7,8 @@ import (
 	"log"
 	"math/big"
 
+	"github.com/joho/godotenv"
+
 	//"github.com/ethereum/go-ethereum"
 	//"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -17,7 +19,10 @@ import (
 )
 
 func main() {
-	bot, err := tgbotapi.NewBotAPI("5254249333:AAF1fKvoJwiDfQvtfcAZB0M8Mt1CUd2JFaA")
+	botAPI := os.Getenv("BOT_API")
+  	RPC := os.Getenv("RPC")
+
+	bot, err := tgbotapi.NewBotAPI(botAPI)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -32,7 +37,7 @@ func main() {
 	updates := bot.GetUpdatesChan(u)
 
 	// Create an IPC based RPC connection to a remote node
-	conn, err := ethclient.Dial("https://mainnet.infura.io/v3/cd12cd06aa5842b4b90dd56051e9ed4f")
+	conn, err := ethclient.Dial(RPC)
 	if err != nil {
 		log.Fatalf("Failed to connect to the Ethereum client: %v", err)
 	}
